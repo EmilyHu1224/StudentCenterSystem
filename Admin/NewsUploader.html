@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>News Uploader</title>
+    <script src="../js/Configuration.js"></script>
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <script src="../../js/jquery.min.js"></script>
+    <script src="../../js/bootstrap.min.js"></script>
+    <script src="../../js/tools.js"></script>
+    <script src="../js/Admin.js"></script>
+
+    <link href="../../Flat-UI-master/dist/css/flat-ui.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../../Flat-UI-master/img/favicon.ico">
+
+    <script>
+        $(document).ready(function ()
+        {
+            $('#ValidationFailed').hide();
+
+            var NewsPostStatus = getCookie('NewsPostStatus');
+
+            switch (NewsPostStatus)
+            {
+                case '-1':
+                    $('#FailedAlert').show();
+                    $('#SuccessAlert').hide();
+                    break;
+                case '1':
+                    $('#FailedAlert').hide();
+                    $('#SuccessAlert').show();
+                    break;
+                default:
+                    $('#FailedAlert').hide();
+                    $('#SuccessAlert').hide();
+            }
+
+            //This function has to be included in document.ready
+            //otherwise, '#SubmitBtn' may not be found.
+            $('#SubmitBtn').click(function ()
+            {
+                var ErrorMessage = "";
+
+                //if (document.getElementById('NewsTitle').value.length <= 0) ErrorMessage += "News Title cannot be empty.<br />";
+
+                if ($('#NewsTitle').val().length <= 0) ErrorMessage += "News Title cannot be empty.<br />";
+                if ($('#NewsTitle').val().length > 250) ErrorMessage += "News Title cannot exceed 250 characters.<br />";
+                if ($('#NewsContent').val().length <= 0) ErrorMessage += "News Content cannot be empty.<br />";
+                if ($('#NewsContent').val().length > 20480) ErrorMessage += "News Content cannot exceed 20480 characters.";
+
+
+                if (ErrorMessage != "")
+                {
+                    $('#ErrorMessage').html(ErrorMessage);
+                    $('#ValidationFailed').show();
+
+                    return false;
+                }
+
+                return true;
+            });
+        });
+
+    </script>
+</head>
+<body>
+    <h1>Student Center
+        <label id="signedIn" class="label label-success"></label>
+    </h1>
+    <br />
+
+    <ul class="nav nav-tabs">
+        <li><a href="AdminHome.html">Home</a></li>
+        <li><a href="CourseManage.html">Course Management</a></li>
+        <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="Calendar.html">Calendar
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#">Upcoming Events</a></li>
+            </ul>
+        </li>
+        <li class="active"><a href="NewsUploader.html">News Uploader</a></li>
+        <li><a href="AdminMessage.html">Message
+            <span class="badge">7</span>
+        </a></li>
+    </ul>
+
+    <div id="SuccessAlert" class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert"
+            aria-hidden="true">
+            &times;
+        </button>
+        News post successfully ;)
+    </div>
+
+    <div id="FailedAlert" class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert"
+            aria-hidden="true">
+            &times;
+        </button>
+        News post failed :(
+    </div>
+
+    <div id="ValidationFailed" class="alert alert-danger alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert"
+            aria-hidden="true">
+            &times;
+        </button>
+        <div id="ErrorMessage"></div>
+    </div>
+
+    <br />
+
+    <form id="NewsUploader" name="NewsUploader" action="ASPXCGI/UploadNews.aspx" method="post" enctype="multipart/form-data" class="form-horizontal">
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">News Title</label>
+            <div class="col-sm-6">
+                <input type="text" id="NewsTitle" name="NewsTitle" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group form-group-lg">
+            <label class="col-sm-2 control-label">News Content</label>
+            <div class="col-sm-6">
+                <textarea id="NewsContent" name="NewsContent" rows="20" class="form-control"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group form-group-lg">
+            <button name="SubmitBtn" id="SubmitBtn" type="submit" class="btn btn-primary col-sm-offset-2">Post</button>
+        </div>
+    </form>
+</body>
+</html>

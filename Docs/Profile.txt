@@ -1,0 +1,17 @@
+﻿<3-tier architecture>
+
+1. User Interface layer - HTML/Web page
+Web page is a template for collecting and presenting data
+JS is responsible for processing the communication between the webpage and the aspx(.cs), including:
+- send Ajax request and process the response data
+- response the post-back data
+
+2. Business Logic Layer - ASPX + ASPX.CS
+ASPXCGI.aspx(.cs) is responsible for dealing with the request from the web page, including:
+- read formdata (and then send it to the App-Code for further processing)
+- read and set cookie
+- buil and send JSon back to the web page
+
+3. Data access layer - App-Code
+App-Code is responsible for accessing the database, including:
+- obtain data from the database and response it to ASPX.CS
